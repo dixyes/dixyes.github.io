@@ -10,7 +10,7 @@
 * Licensed under the MIT license.
 * ---------------------------------
 * Syntax:
-*  <div id="dplayer12" class="dplayer" style="margin-bottom: 20px;"></div><p>no url specified, no dplayer _(:3」∠)_</p>
+*  <div id="dplayer10" class="dplayer" style="margin-bottom: 20px;"></div><p>no url specified, no dplayer _(:3」∠)_</p>
 */
 'use strict'
 var fs = require('hexo-fs'),
@@ -51,7 +51,7 @@ hexo.extend.filter.register('after_post_render', function(data) {
   return data;
 });
 
-// <div id="dplayer13" class="dplayer" style="margin-bottom: 20px;"></div><p>no url specified, no dplayer _(:3」∠)_</p>
+// <div id="dplayer11" class="dplayer" style="margin-bottom: 20px;"></div><p>no url specified, no dplayer _(:3」∠)_</p>
 hexo.extend.tag.register('dplayerww', function(args) {
   let  url, domain, loop, autoplay, theme, pic, wpath, token, screenshot, lang, maximum, hotkey;
   var  id = 'dplayer' + (counter++),
