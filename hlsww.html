@@ -1,0 +1,73 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">  
+    <title>HLS Player</title>  
+    <link href="https://rawgit.com/DIYgod/DPlayer/master/dist/DPlayer.min.css" rel="stylesheet">
+</head>  
+<body>  
+<div id="player1" class="dplayer"></div>
+<script src="https://rawgit.com/DIYgod/DPlayer/master/dist/DPlayer.min.js"></script>
+<script src="https://cdn.bootcss.com/hls.js/0.7.9/hls.min.js"></script>
+<script src="https://cdn.wilddog.com/sdk/js/2.5.8/wilddog-sync.js"></script>
+
+<script>
+const dmpid='ccav5hd',clientId=Math.random(),startTime=Date.now();
+const wwconfig = {
+  authDomain: "dixyes.github.io",
+  syncURL: "https://dplayerww.wilddogio.com"
+};
+wilddog.initializeApp(wwconfig);
+var ref = wilddog.sync().ref("/"+dmpid);
+
+var wwbe = {
+    send: (endpoint, danmakuData) => {
+        console.log(danmakuData);
+        var msgData={
+          'text':danmakuData['text'],
+          'color':danmakuData['color'],
+          'type':danmakuData['type'],
+          'from':clientId,
+          'time':Date.now()
+        };
+        console.log(msgData);
+        ref.push(msgData);
+    },
+
+    read: (endpoint, cbk) => {
+        cbk(null, []);
+    }
+};
+var dp = new DPlayer({
+    element: document.getElementById('player1'),                       // Optional, player element
+    autoplay: true,                                                   // Optional, autoplay video, not supported by mobile browsers
+    theme: '#FADFA3',                                                  // Optional, theme color, default: #b7daff
+    loop: false,                                                        // Optional, loop play music, default: true
+    lang: 'zh',                                                        // Optional, language, `zh` for Chinese, `en` for English, default: Navigator language
+    screenshot: true,                                                  // Optional, enable screenshot function, default: false, NOTICE: if set it to true, video and video poster must enable Cross-Origin
+    hotkey: true,                                                      // Optional, binding hot key, including left right and Space, default: true
+    preload: 'auto',                                                   // Optional, the way to load music, can be 'none' 'metadata' 'auto', default: 'auto'
+    video: {                                                           // Required, video info
+        url: "https://tv6.byr.cn/hls/cctv5hd.m3u8",                  // Required, video link
+        type: 'auto'                                                   // Optional, video type, `flv` for flv format, `hls` for m3u8 format, `normal` for mp4 ogg and webm format, `auto` for automatic detection, default: `auto`
+    },
+    apiBackend: wwbe,
+    danmaku: {                                                         // Optional, showing danmaku, ignore this option to hide danmaku
+        id: '',                                        // Required, danmaku id, NOTICE: it must be unique, can not use these in your new player: `https://api.prprpr.me/dplayer/list`
+        api: 'localhost',                         // Required, danmaku api 
+    }
+});
+ref.on('child_added', function(data) {
+  var dm=data.val();
+  console.log('got',JSON.stringify(dm));
+  if (dm.time<startTime){
+    ref.child(data.key()).remove()
+    return;
+  }
+  if (dm.from!==clientId)
+    dp.pushDanmaku(dm.text, dm.color, dm.type);
+});
+</script>
+</body>
+  
+</html>
