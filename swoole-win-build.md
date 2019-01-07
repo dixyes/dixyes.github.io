@@ -4,15 +4,26 @@
 
 1. Download cygwin from sourceforge, install it with php7, nghttp2 and it's developement package with setup.exe (or package manager you like)
 2. Use `pecl` to install swoole: `pecl install swoole`
+3. Alternatively, you can build from source:
+```bash
+# clone from github or oschina
+git clone $upstream swoole-src
+cd swoole-src
+./configure --with-php-config=/usr/bin/php-config --enable-sockets=y --enable-openssl=y --enable-http2=y --enable-mysqlnd=y --enable-coroutine-postgresql=y
+make -jX # which X=processors number used in build
+make install
+```
 
 ## msys
+
+not possible yet(?)
 
 1. Build php7 with pear phar and pecl: `(at php7 source directory)# ./configure --with-pear --enable-phar`
 2. Use `pecl` to install swoole: `pecl install swoole`
 
 ## native (msvc)
 
-not possible yet
+not possible yet.
 
 ## Windows Subsystem Linux (Win 10 1607+, Win Server 1709+, Win 10 LTSC 2019+)
 
