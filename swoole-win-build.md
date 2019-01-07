@@ -32,4 +32,6 @@ git clone $upstream swoole-src
 cd swoole-src
 ./make.sh
 sudo make install
+# benchmark it
+php -dextension=swoole.so benchmark/benchmark.php
 ```
